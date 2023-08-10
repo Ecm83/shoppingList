@@ -57,12 +57,61 @@ function delButton() {
   return buttonIcon
 }
 
+function minHandler() {
+  const buttonMin  = document.createElement('button')
+  buttonMin.setAttribute('disabled', true)
+  buttonMin.setAttribute('class', 'counter')
+  buttonMin.textContent = '-1'
+  return buttonMin
+}
+
+function plusHandler() {
+  const plusButton = document.createElement('button')
+  plusButton.setAttribute('class', 'counter')
+  plusButton.textContent = '+1'
+  return plusButton
+}
+
+function inputPurchase() {
+  const inputAmount = document.createElement('input')
+  inputAmount.setAttribute('class', 'inputAmount')
+  inputAmount.value = 1
+  return inputAmount
+}
+
+
+const purchaseAmountController = () => {
+  const purchaseElement = document.createElement('div')
+  const minButton = minHandler()
+  const plusButton = plusHandler()
+  const input = inputPurchase()
+  minButton.addEventListener('click', () => {
+    --input.value
+    if(parseInt(input.value) > 1 ){minButton.removeAttribute('disabled')
+      }else{
+        minButton.setAttribute('disabled', true)
+    }
+    })
+  
+  plusButton.addEventListener('click', () => {
+    ++input.value
+    if(parseInt(input.value) > 1 ){minButton.removeAttribute('disabled')}})
+  
+  purchaseElement.setAttribute('class', 'divPurchase')
+  purchaseElement.appendChild(minButton)
+  purchaseElement.appendChild(input)
+  purchaseElement.appendChild(plusButton)
+  return purchaseElement
+}
+
 const item = (text) => {  
   const del = delButton()
+  const divPurchase = purchaseAmountController()
   const itemName = document.createElement('li')
   itemName.setAttribute('class', 'itemList')
   itemName.textContent = text
   itemName.appendChild(del)
+  itemName.appendChild(divPurchase)
   
   del.addEventListener('click', () => {
     itemName.parentNode.removeChild(itemName)
@@ -74,21 +123,21 @@ const item = (text) => {
   }) 
   
   const isPresent = itemsKeeper.some(item => item === text)
-  if(!isPresent){
+  // if(!isPresent){
     list.appendChild(itemName)
     window.localStorage.setItem('items', JSON.stringify(itemsKeeper))  
-  }else{
-    alert('Este objeto ya esta en la lista')
-  }
+  // }else{
+  //   alert('Este objeto ya esta en la lista')
+  // }
 }  
 
-document.addEventListener('DOMContentLoaded', () => {
-  const data = JSON.parse(window.localStorage.getItem('items')) || [];
-  itemsKeeper.push(...data); // Agregar los elementos a itemsKeeper
-  data.forEach(item => {
-    item(item); // Renderizar cada elemento
-  });
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//   const data = JSON.parse(window.localStorage.getItem('items')) || [];
+//   itemsKeeper.push(...data); // Agregar los elementos a itemsKeeper
+//   data.forEach(item => {
+//     item(item); // Renderizar cada elemento
+//   });
+// });
 
 const handleButton = () => {
   const inputValue = input.value.trim()
