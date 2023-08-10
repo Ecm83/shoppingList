@@ -1,0 +1,7 @@
+.itemList {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    border: solid 1px black;
+    padding: 5px;
+}
