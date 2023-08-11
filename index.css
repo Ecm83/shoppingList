@@ -4,4 +4,50 @@
     gap: 15px;
     border: solid 1px black;
     padding: 5px;
+    align-items: baseline;
+    width: 450px;
+    
 }
+
+#textPrice {
+    margin-left: 1px;
+}
+
+#divPurchaseController {
+    display: flex;
+    align-items: center;
+    justify-content: baseline;
+
+}
+
+.counter {
+    width: 25px;
+    height: 25px;
+    text-align: justify;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.inputAmount {
+    height: 20px;
+    margin: 5px;
+    width: 30px;
+    text-align: center;
+    border: 1px solid black;
+    align-items: baseline;
+    justify-content: center;
+}
+
+#priceInput {
+    width: 50px;
+    height: 20px;
+    margin-left: 5px;
+}
+
+#deleteButton { 
+    height: 30px;
+    justify-content: baseline;
+    text-align: justify;
+    background-color: white;    
+}
+
