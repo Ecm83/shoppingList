@@ -1,10 +1,11 @@
 const input = document.getElementById('myInput');
 const button = document.getElementById('myButton');
 const list = document.getElementById('myList');
+const totalPrice = document.getElementById('totalPrice')
 
 // Cargar datos del localStorage al inicio
-const data = JSON.parse(window.localStorage.getItem('items')) || [];
-const itemsKeeper = data || [];
+const itemsKeeper = JSON.parse(window.localStorage.getItem('items')) || [];
+const subTotalKeeper = [] 
 
 const priceText = () => {
   const textPrice = document.createElement('p');
@@ -49,6 +50,12 @@ function inputPurchase() {
   inputAmount.value = 1;
   return inputAmount;
 }
+const totalAmount = () => {
+  console.log('subTotalKeeperKeeper:' , subTotalKeeper)
+  const amountItems = subTotalKeeper.reduce((cont, val) => parseFloat(cont) + parseFloat(val), 0)
+  console.log('amountItems:', amountItems)
+  totalPrice.textContent = amountItems
+}
 
 const purchaseAmountController = () => {
   const purchaseElement = document.createElement('div');
@@ -68,6 +75,8 @@ const purchaseAmountController = () => {
     }
     const subtotal = parseInt(priceItem.value) * parseInt(input.value);
     itemSubtotal.textContent = `Subtotal: ${subtotal}`;
+    subTotalKeeper[0] = subtotal
+    totalAmount()
   });
 
   plusButton.addEventListener('click', () => {
@@ -77,12 +86,19 @@ const purchaseAmountController = () => {
     }
     const subtotal = parseInt(priceItem.value) * parseInt(input.value);
     itemSubtotal.textContent = `Subtotal: ${subtotal}`;
+    const index = subTotalKeeper.map((element, index) => {
+      if(element === subtotal) return index
+    })
+    subTotalKeeper[index] = subtotal
+    totalAmount()
   });
 
   priceItem.addEventListener('change', e => {
     console.log('e.target.value', e.target.value);
     const subtotal = parseInt(e.target.value) * parseInt(input.value);
     itemSubtotal.textContent = `Subtotal: ${subtotal}`;
+    subTotalKeeper[0] = subtotal
+    totalAmount()
   });
 
   const initialSubtotal = parseInt(priceItem.value) * parseInt(input.value);
@@ -90,7 +106,8 @@ const purchaseAmountController = () => {
 
   itemSubtotal.value = `${parseInt(priceItem.value) * parseInt(input.value)}`;
   console.log('subtotal es:', itemSubtotal);
-
+  subTotalKeeper.push(itemSubtotal.value)
+  
   purchaseElement.setAttribute('class', 'divPurchase');
   purchaseElement.appendChild(priceItem);
   purchaseElement.appendChild(minButton);
@@ -127,15 +144,8 @@ const item = text => {
       itemsKeeper.splice(index, 1);
       window.localStorage.setItem('items', JSON.stringify(itemsKeeper));
     }
-  });
-
-  const isPresent = itemsKeeper.some(item => item === text);
-  // if(!isPresent){
-  list.appendChild(itemName);
-  window.localStorage.setItem('items', JSON.stringify(itemsKeeper));
-  // }else{
-  // alert('Este objeto ya esta en la lista')
-  // }
+  }); 
+  return (itemName)
 };
 
 // document.addEventListener('DOMContentLoaded', () => {
@@ -148,14 +158,20 @@ const item = text => {
 
 const handleButton = () => {
   const inputValue = input.value.trim();
+  const itemName = item(inputValue);
   const isPresent = itemsKeeper.some(item => item === inputValue);
-  console.log('isPresent, esta presente?:', isPresent);
-  if (inputValue !== '') {
+  
+  console.log('isPresent:', isPresent)
+  if(!isPresent && inputValue !== ''){
+    list.appendChild(itemName);
     itemsKeeper.push(inputValue);
-    item(inputValue);
+    window.localStorage.setItem('items', JSON.stringify(itemsKeeper));    
     input.value = '';
     input.focus();
+  }else{
+  alert('Este objeto ya esta en la lista')
   }
-};
+  // console.log('isPresent, esta presente?:', isPresent);
+};  
 
 button.addEventListener('click', handleButton);
